@@ -23,7 +23,7 @@ Layanan ini fokus pada satu hal: **membuat transaksi baru secara aman**, termasu
 Hanya butuh 3 langkah untuk menjalankan proyek ini:
 
 1. **Clone Proyek Ini**  
-   git clone https://github.com/Gibrans567/xyz-transaction-service.git  
+   git clone \[URL\_GITHUB\_ANDA\]  
    cd xyz-transaction-service
 
 2. **Nyalakan Database** 🐳  
@@ -35,7 +35,7 @@ Hanya butuh 3 langkah untuk menjalankan proyek ini:
 
    Server Anda kini aktif di http://localhost:8080.
 
-## **API Endpoint**
+## **📖 API Endpoint**
 
 ### **Buat Transaksi Baru**
 
@@ -57,6 +57,26 @@ Hanya butuh 3 langkah untuk menjalankan proyek ini:
 
 * **Hasil Gagal (422 Unprocessable Entity)**:  
   { "error": "limit tidak mencukupi (sisa: 500000.00, butuh: 600000.00)" }
+
+## **✅ Verifikasi Data di Database (Opsional)**
+
+Setelah berhasil melakukan POST transaksi, Anda bisa mengecek langsung ke database untuk memastikan data benar-benar berubah.
+
+1. **Masuk ke dalam container database**:  
+   docker exec \-it xyz\_mysql\_db mysql \-u root \-p
+
+   Saat diminta password, ketik: password  
+2. **Jalankan query SQL**: Setelah masuk, jalankan perintah-perintah ini untuk melihat datanya.  
+   \-- Pilih database yang akan digunakan  
+   USE xyz\_db;
+
+   \-- Cek apakah transaksi baru sudah tercatat  
+   SELECT \* FROM transactions WHERE contract\_number \= 'KONTRAK-001';
+
+   \-- Cek apakah limit konsumen sudah berkurang  
+   \-- (Contoh: limit Budi (id=1) untuk tenor 3 bulan, awalnya 500rb)  
+   \-- Hasilnya harus menjadi 450000  
+   SELECT \* FROM customer\_limits WHERE customer\_id \= 1 AND tenor\_in\_months \= 3;
 
 ## **🧪 Testing**
 
